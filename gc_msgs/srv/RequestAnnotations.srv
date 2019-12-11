@@ -1,0 +1,5 @@
+sensor_msgs/Image image
+string[] annotations
+int16[] max_results
+---
+string response

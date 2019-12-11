@@ -1,0 +1,6 @@
+PyAudio
+google-cloud-speech
+six==1.10.0
+google-api-python-client
+pyyaml
+protobuf-to-dict

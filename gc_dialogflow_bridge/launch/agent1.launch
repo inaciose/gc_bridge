@@ -1,0 +1,7 @@
+<launch>
+
+	<node name="dialogflow" pkg="gc_dialogflow_bridge" type="dialogflow_node.py" output="screen">
+		<param name="client_access_token" value="" />
+	</node>
+
+</launch>

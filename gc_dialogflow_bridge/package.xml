@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+  <name>gc_dialogflow_bridge</name>
+  <version>0.0.0</version>
+  <description>A ROS wrapper for Dialogflow</description>
+
+  <maintainer email="rokusottervanger@gmail.com">Rokus Ottervanger</maintainer>
+
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>rospy</run_depend>
+  <run_depend>apiai</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>audio_common_msgs</run_depend>
+
+</package>

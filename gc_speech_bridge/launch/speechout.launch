@@ -1,0 +1,14 @@
+<launch>
+
+	<node name="sound_play" pkg="sound_play" type="soundplay_node.py" output="screen" />
+
+	<node name="textspeech" pkg="gc_speech_bridge" type="text2speech" output="screen">
+		<!--<remap from="speech" to="/speechout"/>-->
+		<param name="audioPath" value="$(find gc_speech_bridge)/storedSpeech" />
+		<param name="language" value="pt" />  <!-- de, en, fr, ... (all languages supported by Google) -->
+		<param name="mplayer" type="bool" value="false" /> <!-- true for mplayer use -->
+		<param name="jsonPath" value=" $(find gc_speech_bridge)/files.json" />
+		<param name="volume" value="1.0" />
+	</node>
+
+</launch>
