@@ -1,0 +1,58 @@
+<launch>
+
+  <arg name="launch_trainer" default="true" />
+
+  <arg name="use_opencv3" default="false" />
+  <arg name="use_opencv3_1" default="false" />
+  <arg name="use_opencv3_2" default="false" />
+  <arg name="use_opencv3_3" default="false" />
+  <arg name="debug_view" default="true" />
+  <arg name="queue_size" default="100" doc="Specify queue_size of input image subscribers" />
+
+  <arg name="image" default="/usb_cam/image_raw" />
+  <arg name="data_dir" default="~/.ros/opencv_apps/face_data" />
+
+    <node name="speech2text" pkg="gc_speech_bridge" type="speech2text_mic.py" output="screen" >
+        <remap from="speech" to="/speechin"/>
+	</node>
+
+	<node name="dialogflow" pkg="gc_dialogflow_bridge" type="dialogflow_node.py" output="screen" required="true">
+		<param name="client_access_token" value="xxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+	</node>
+
+    <node name="text2speech" pkg="gc_speech_bridge" type="text2speech" output="screen">
+        <remap from="speech" to="/speechout"/>
+        <param name="audioPath" value="$(find gc_speech_bridge)/storedSpeech" />
+        <param name="language" value="pt" />  <!-- de, en, fr, ... (all languages supported by Google) -->
+        <param name="mplayer" type="bool" value="false" /> <!-- true for mplayer use -->
+        <param name="jsonPath" value=" $(find gc_speech_bridge)/files.json" />
+        <param name="volume" value="1.0" />
+    </node>
+
+    <node name="sound_play" pkg="sound_play" type="soundplay_node.py" output="screen" />
+
+    <arg name="view" default="false" />
+    <arg name="tf" default="true" />
+
+    <node if="$(arg tf)" pkg="tf" type="static_transform_publisher" name="usb_cam_tf" args="0.10 0 0.10 0 0 0 /base_link /usb_cam 10" />
+    
+    <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
+        <param name="video_device" value="/dev/video0" />
+        <param name="image_width" value="640" />
+        <param name="image_height" value="480" />
+        <param name="pixel_format" value="yuyv" />
+        <param name="camera_frame_id" value="usb_cam" />
+        <param name="io_method" value="mmap"/>
+    </node>
+
+    <node if="$(arg view)" name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+        <remap from="image" to="/usb_cam/image_raw"/>
+        <param name="autosize" value="true" />
+    </node>
+
+    <node name="gc_vision_srv" pkg="gc_vision_bridge" type="srv_server.py" output="screen" />
+    
+    <node name="gc_vision_cli" pkg="gc_vision_bridge" type="srv_client4.py" output="screen" />
+
+
+</launch>
